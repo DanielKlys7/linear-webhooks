@@ -5,8 +5,10 @@ import LinearService from "../services/LinearService";
 
 class LinearWebhookController {
   private openAiService: OpenAiService;
+  private linearService: LinearService;
 
   constructor(linearService: LinearService, openAiService: OpenAiService) {
+    this.linearService = linearService;
     this.openAiService = openAiService;
 
     this.updateIssueWithProject = this.updateIssueWithProject.bind(this);
@@ -16,15 +18,25 @@ class LinearWebhookController {
     req: Request<{}, {}, LinearIssueWebhookPayload>,
     res: Response
   ): Promise<void> {
-    // const {
-    //   data: { title },
-    // } = req.body;
+    const { data } = req.body;
 
     const targetProject = await this.openAiService.getTargetProjectForIssue(
-      "Zaprogramować asystenta AI"
+      data.title
     );
 
-    res.status(200).json({ targetProject });
+    const issue = await this.linearService.getIssue(data.id);
+
+    if (issue.projectId) {
+      res.status(200).json({ message: "Issue already has a project" });
+      return;
+    }
+
+    const updatedIssue = await this.linearService.updateIssueProjectId(
+      issue,
+      targetProject
+    );
+
+    res.status(200).json({ data: updatedIssue });
   }
 }
 

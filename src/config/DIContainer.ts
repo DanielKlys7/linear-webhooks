@@ -8,7 +8,7 @@ import FileService from "../services/FileService";
 
 export const SERVICES = {
   LINEAR_CLIENT: "linearClient",
-  OPENAI_CLIENT: "openAiClient",
+  OPENAI_CLIENT: "openAIClient",
 
   LINEAR_SERVICE: "linearService",
   OPENAI_SERVICE: "openAiService",
@@ -29,19 +29,22 @@ class DIContainer {
     this.services.set(SERVICES.FILE_SERVICE, new FileService());
     this.services.set(
       SERVICES.OPENAI_SERVICE,
-      new OpenAiService(this.get("openAiClient"), this.get("fileService"))
+      new OpenAiService(
+        this.get(SERVICES.OPENAI_CLIENT),
+        this.get(SERVICES.FILE_SERVICE)
+      )
     );
     this.services.set(
       SERVICES.LINEAR_SERVICE,
-      new LinearService(this.get("linearClient"))
+      new LinearService(this.get(SERVICES.LINEAR_CLIENT))
     );
 
     // controllers
     this.services.set(
       SERVICES.LINEAR_WEBHOOK_CONTROLLER,
       new LinearWebhookController(
-        this.get("linearService"),
-        this.get("openAiService")
+        this.get(SERVICES.LINEAR_SERVICE),
+        this.get(SERVICES.OPENAI_SERVICE)
       )
     );
   }

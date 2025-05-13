@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
 import OpenAI from "openai";
 import FileService from "./FileService";
 
-class OpenAiService {
+class OpenAIService {
   private openAiClient: OpenAI;
   private fileService: FileService;
 
@@ -12,14 +11,19 @@ class OpenAiService {
   }
 
   async getTargetProjectForIssue(title: string): Promise<string> {
-    const response = await this.openAiClient.responses.create({
+    const completion = await this.openAiClient.chat.completions.create({
       model: "gpt-3.5-turbo",
-      instructions: this.fileService.getPromptContent("determineIssueProject"),
-      input: title,
+      messages: [
+        {
+          role: "system",
+          content: this.fileService.getPromptContent("determineIssueProject"),
+        },
+        { role: "user", content: title },
+      ],
     });
 
-    return response.output_text;
+    return completion.choices[0]?.message?.content?.trim() ?? "";
   }
 }
 
-export default OpenAiService;
+export default OpenAIService;
