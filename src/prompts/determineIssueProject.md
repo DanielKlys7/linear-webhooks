@@ -6,4 +6,6 @@ Chores - 6387fa52-ec9b-4b3b-8a09-8293e21ef8bf - Tasks related to household chore
 Learning - 313abca6-1980-451b-bf45-dc52d88a039c - Tasks related to studying, skill improvement, and educational activities.
 Misc - a7c8265c-9d41-46a5-b88c-84c029f9de34 - Tasks that do not fit into the other categories.
 Coding - a6d6e175-215b-46fc-8a0d-5748357c163f - Tasks related to software development, debugging, and coding.
+Entertainment - 03ed0825-d8e7-4110-a643-296351ce6c6d - Tasks related to leisure activities, hobbies, and entertainment.
+Sport - 17a0e4cc-05f9-4c9b-b078-e712f5955cb8 - Tasks related to physical fitness, exercise, and health.
 </categories_list>
